@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Calculadora Financeira</h1>
+    <h2>MONITORAMENTO DE SOLO PARA CAFEICULTURA </h2>
+    <h5>Lembrete de valores relevantes para o financeiro:
+        <br>
+        Custo por sensor (1 por irrigador): R$ 399,90
+        <br>
+        Mensalidade: R$ 99,90 por irrigador ou R$ 1198.8 ao ano
+        <br>
+        Perda em % pelo déficit hidrico (sem nossos irrigadores): 20% a 30%
+        <br>
+        Perda em % pelo déficit hidrico (com nossos irrigadores): 5% a 10%
+        <br>
+
+
+
+    </h5>
+    <span>INVESTIMENTO:</span>
+    <br>
+    <br>
+    <span>Tamanho da Área(Hectares):</span>
+    <input type="text" id="input_area">
+    <br>
+    <span>Dica: Cada irrigador possui sensor atende uma área de até 20 hectares</span>
+    <br>
+    <span>Quantidade de irrigadores: </span>
+    <input type="text" id="input_irrigador">
+    <br>
+    <span>Quantidade de meses pagando a mensalidade:</span>
+    <input type="text" id="input_mes">
+    <br>
+    <span>Preço da saca de café:</span>
+    <input type="text" id="input_sacavalor" placeholder="Valor médio: 1803.73">
+    <br>
+    <span>Produtividade Almejada (sacas por hectares)</span>
+    <input type="text" id="input_produtividade">
+    <br>
+    <button onclick="custo()">Calcular Custos</button>
+    <br>
+    <button onclick="sem_irrigador()">Calcular Prejuizos Sem Nosso Produto</button>
+    <br>
+    <button onclick="com_irrigador()">Calcular Lucro Com Nosso Produto</button>
+    <br>
+    <div id="div_exibir1"></div>
+    <br>
+    <div id="div_exibir2"></div>
+    <br>
+    <div id="div_exibir3"></div>
+
+
+</body>
+</html>
+
+<script>
+    function custo () {
+        let area = Number (input_area.value)
+        let irrigador = Number (input_irrigador.value)
+        let sacavalor = Number (input_sacavalor.value)
+        let mes = Number (input_mes.value)
+        let produtividade = Number (input_produtividade.value)
+
+        let instalação = 399.90 * irrigador
+        let mensalidades = 99.90 * mes * irrigador
+
+        let custo_total = instalação + mensalidades
+        
+        let mensagem = 
+        `Investimento no sistema de irrigadores: <br> <br>
+        Taxa de instalação: R$ ${instalação.toFixed(2)} <br>
+        Mensalidades (em ${mes} meses): R$ ${mensalidades.toFixed(2)} <br>
+        Custo Total no periodo de ${mes} meses: R$ ${custo_total.toFixed(2)} (instalação + mensalidades)`
+        div_exibir1.innerHTML = mensagem
+    }
+    function sem_irrigador () {
+        let area = Number (input_area.value)
+        let irrigador = Number (input_irrigador.value)
+        let sacavalor = Number (input_sacavalor.value)
+        let mes = Number (input_mes.value)
+        let produtividade = Number (input_produtividade.value)
+
+        let produção_sacas = produtividade * area
+
+        let prejuizo1 = 20 / 100 * sacavalor * produção_sacas
+        let prejuizo2 = 30 / 100 * sacavalor * produção_sacas
+
+        let produçãototal = produção_sacas * sacavalor
+        let mensagem = 
+        `O Cenário Sem Nossos Irrigadores: <br> <br>
+        Produção Total Estimada: ${produção_sacas.toFixed(2)} sacas (${area}ha x ${produtividade}sacas/ha). <br>
+        Prejuízo Estimado (20~30%): Perda de <span style="color: red;">R$${prejuizo1.toFixed(2)}</span> a <span style="color: red;">R$${prejuizo2.toFixed(2)}</span>.(20 a 30% das sacas)`
+        div_exibir2.innerHTML = mensagem
+    }
+    function com_irrigador () {
+        let area = Number (input_area.value)
+        let irrigador = Number (input_irrigador.value)
+        let sacavalor = Number (input_sacavalor.value)
+        let mes = Number (input_mes.value)
+        let produtividade = Number (input_produtividade.value)
+
+        let produção_sacas = produtividade * area
+
+        // valor em dinheiro perdido
+        let prejuizo_20 = 20 / 100 * sacavalor * produção_sacas
+        let prejuizo_30 = 30 / 100 * sacavalor * produção_sacas
+        let prejuizo_5 = 5 / 100 * sacavalor * produção_sacas
+        let prejuizo_10= 10/100 * sacavalor * produção_sacas 
+
+        // quantidade sacas perdidas
+        let perda_sacas_20 = 20 / 100 * produção_sacas
+        let perda_sacas_30 = 30 / 100 * produção_sacas
+        let perda_sacas_5 = 5 / 100 * produção_sacas
+        let perda_sacas_10 = 10 / 100 * produção_sacas
+        
+        
+        let sacas_salvas1 = perda_sacas_30 - perda_sacas_5 
+        let sacas_salvas2 = perda_sacas_20 - perda_sacas_10
+
+        let brutosalvo1 = sacas_salvas1 * sacavalor 
+        let brutosalvo2 = sacas_salvas2 * sacavalor
+
+        let mensagem = 
+        `O Cenário Com Nosso Produto:a <br><br>
+        Perda Reduzida (5~10% ao invés de 20~30%): Perda de R$${prejuizo_5.toFixed(2)} a R$${prejuizo_10.toFixed(2)}
+        ao invés de <span style="color: red;">R$${prejuizo_20.toFixed(2)}</span> a <span style="color: red;">R$${prejuizo_30.toFixed(2)}</span>. <br>
+        Sacas Salvas: de ${sacas_salvas2} a ${sacas_salvas1} <br>
+        Valor Bruto Preservado: de <span style="color: green;">R$${brutosalvo2.toFixed(2)}</span> a <span style="color: green;">R$${brutosalvo1.toFixed(2)}</span> (10% a 25% da produção total não perdida)`
+        div_exibir3.innerHTML = mensagem
+    }
+</script>
