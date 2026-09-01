@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ptBR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Financeira - Monitoramento de Solo (Café)</title>
+</head>
+<body>
+
+    <h2>Calculadora Financeira - Monitoramento de Solo em Cafeicultura</h2>
+
+    <span>Informe o tamanho da propriedade, em hectares: </span>
+    <input type="text" id="ipt_hectares">
+    <br><br>
+
+    <span>Informe a produtividade média, em sacas por hectare: </span>
+    <input type="text" id="ipt_produtividade">
+    <br><br>
+
+    <span>Informe o preço da saca de café, em reais (R$): </span>
+    <input type="text" id="ipt_precoSaca">
+    <br><br>
+
+    <span>Informe o percentual de perda de produção SEM o sistema (%): </span>
+    <input type="text" id="ipt_perdaSemSistema">
+    <br><br>
+
+    <span>Informe o percentual de perda de produção COM o sistema (%): </span>
+    <input type="text" id="ipt_perdaComSistema">
+    <br><br>
+
+    <button onclick="simular()">Calcular</button>
+
+    <div id="div_exibir"></div>
+
+</body>
+</html>
+<script>
+
+
+    let custoInstalacaoPorIrrigador = 399.90;   // instalação (Arduino + sensor + montagem + configuração)
+    let mensalidadePorIrrigador = 99.90;        // mensalidade (plataforma, armazenamento, APIs, manutenção)
+    let hectaresPorIrrigador = 20;              // cada irrigador atende até 20 hectares
+
+    function simular(){
+
+        let hectares = Number(ipt_hectares.value);
+        let produtividade = Number(ipt_produtividade.value);
+        let precoSaca = Number(ipt_precoSaca.value);
+        let perdaSemSistema = Number(ipt_perdaSemSistema.value);
+        let perdaComSistema = Number(ipt_perdaComSistema.value);
+
+        /* quantos irrigadores (pontos de monitoramento) são necessários para cobrir a propriedade se a divisão não for exata, 
+        sobra um pedaço de área - e esse pedaço ainda precisa de um irrigador inteiro, então soma mais 1*/
+        let numeroIrrigadores;
+        let restoHectares = hectares % hectaresPorIrrigador;
+        if (restoHectares == 0){
+            numeroIrrigadores = hectares / hectaresPorIrrigador;
+        } else {
+            numeroIrrigadores = ((hectares - restoHectares) / hectaresPorIrrigador) + 1;
+        }
+
+        let producaoTotal = hectares * produtividade;
+
+        let sacasPerdidasSemSistema = producaoTotal * (perdaSemSistema / 100);
+        let sacasPerdidasComSistema = producaoTotal * (perdaComSistema / 100);
+
+        let sacasPreservadas = sacasPerdidasSemSistema - sacasPerdidasComSistema;
+
+        let valorPerdidoSemSistema = sacasPerdidasSemSistema * precoSaca;
+        let valorPerdidoComSistema = sacasPerdidasComSistema * precoSaca;
+        let valorPreservado = sacasPreservadas * precoSaca;
+
+        let percentualReducaoPerdas = (sacasPreservadas / sacasPerdidasSemSistema) * 100;
+
+        let investimentoInicial = numeroIrrigadores * custoInstalacaoPorIrrigador;
+        let mensalidadesAno1 = numeroIrrigadores * mensalidadePorIrrigador * 12;
+        let custoTotalAno1 = investimentoInicial + mensalidadesAno1;
+
+        let lucroAno1 = valorPreservado - custoTotalAno1;
+
+        let custoAno2emDiante = numeroIrrigadores * mensalidadePorIrrigador * 12;
+        let lucroAno2emDiante = valorPreservado - custoAno2emDiante;
+
+        let sacasParaCobrirInstalacao = investimentoInicial / precoSaca;
+
+        let paybackMeses = (custoTotalAno1 / valorPreservado) * 12;
+
+        let lucroAcumulado5Anos = lucroAno1 + (lucroAno2emDiante * 4);
+
+        /* se o lucro for negativo, viro ele positivo multiplicando por -1
+        (assim dá pra mostrar o valor do prejuízo sem o sinal de "menos" na frente)*/
+        let lucroAno1Positivo;
+        if (lucroAno1 < 0){
+            lucroAno1Positivo = lucroAno1 * -1;
+        } else {
+            lucroAno1Positivo = lucroAno1;
+        }
+
+        let lucroAno2Positivo;
+        if (lucroAno2emDiante < 0){
+            lucroAno2Positivo = lucroAno2emDiante * -1;
+        } else {
+            lucroAno2Positivo = lucroAno2emDiante;
+        }
+
+        let mensagem = `Para uma propriedade de ${hectares} hectares, com produtividade de ${produtividade} sacas/hectare, `
+        mensagem += `a produção total estimada é de ${producaoTotal.toFixed(1)} sacas por safra. <br><br>`
+
+        mensagem += `Sem o sistema, a perda estimada é de ${sacasPerdidasSemSistema.toFixed(1)} sacas (${perdaSemSistema}%), `
+        mensagem += `equivalentes a R$ ${valorPerdidoSemSistema.toFixed(2)}. `
+        mensagem += `Com o sistema, a perda cai para ${sacasPerdidasComSistema.toFixed(1)} sacas (${perdaComSistema}%), `
+        mensagem += `equivalentes a R$ ${valorPerdidoComSistema.toFixed(2)}. <br><br>`
+
+        mensagem += `Ou seja, o sistema ajuda a preservar aproximadamente ${sacasPreservadas.toFixed(1)} sacas, `
+        mensagem += `equivalentes a R$ ${valorPreservado.toFixed(2)} - uma redução de ${percentualReducaoPerdas.toFixed(1)}% na perda de produção. <br><br>`
+
+        mensagem += `Para cobrir essa propriedade, são necessários ${numeroIrrigadores} irrigador(es) com sensor instalado. `
+        mensagem += `A instalação custa R$ ${investimentoInicial.toFixed(2)}, mais R$ ${mensalidadesAno1.toFixed(2)} `
+        mensagem += `em mensalidades no primeiro ano, totalizando R$ ${custoTotalAno1.toFixed(2)}. `
+        mensagem += `Só a instalação já seria coberta preservando ${sacasParaCobrirInstalacao.toFixed(2)} sacas. <br><br>`
+
+        mensagem += `Resultado do primeiro ano: `
+        if (lucroAno1 >= 0){
+            mensagem += `lucro estimado de R$ ${lucroAno1.toFixed(2)}. `
+        } else {
+            mensagem += `prejuízo estimado de R$ ${lucroAno1Positivo.toFixed(2)}. `
+        }
+
+        mensagem += `A partir do segundo ano (sem nova instalação, só mensalidade), o resultado estimado é de `
+        if (lucroAno2emDiante >= 0){
+            mensagem += `lucro de R$ ${lucroAno2emDiante.toFixed(2)} por ano. <br><br>`
+        } else {
+            mensagem += `prejuízo de R$ ${lucroAno2Positivo.toFixed(2)} por ano. <br><br>`
+        }
+
+        if (paybackMeses > 0 && paybackMeses <= 12){
+            mensagem += `Nesse cenário, o investimento se paga em aproximadamente ${paybackMeses.toFixed(1)} meses. `
+        } else if (paybackMeses > 12) {
+            mensagem += `Nesse cenário, o investimento levaria cerca de ${paybackMeses.toFixed(1)} meses para se pagar (mais de um ano). `
+        }
+
+        mensagem += `Projetando 5 anos de uso, o lucro acumulado estimado é de R$ ${lucroAcumulado5Anos.toFixed(2)}.`
+
+        div_exibir.innerHTML = mensagem;
+
+        if (lucroAno1 >= 0){
+            div_exibir.innerHTML += "<br><br>Nesse cenário, o sistema já se paga no primeiro ano!"
+        } else if (lucroAno2emDiante >= 0){
+            div_exibir.innerHTML += "<br><br>O primeiro ano fica no prejuízo (por causa da instalação), mas o sistema se paga a partir do segundo ano."
+        } else {
+            div_exibir.innerHTML += "<br><br>Nesse cenário, o sistema não se paga - vale revisar os percentuais de perda ou o tamanho da propriedade."
+        }
+    }
+</script>
