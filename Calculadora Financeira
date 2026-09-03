@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Monitoramento de Solo</title>
+</head>
+<body>
+    <h1>Simulador Financeiro</h1>
+    <h2>Sistema de Monitoramento de Solo</h2>
+
+    <span>Digite a área da propriedade, em hectare:</span>
+    <input type="text" id="input_area">
+    <br>
+
+    <span>Digite a quantidade de irrigadores:</span>
+    <input type="text" id="input_irrigadores">
+    <br>
+
+    <span>Digite a quantidade média de café produzida em cada hectare, em sacas:</span>
+    <input type="text" id="input_quantidade">
+    <br>
+
+    <span>Digite o valor de uma saca:</span>
+    <input type="text" id="input_valor">
+    <br>
+
+    <span>Digite sua perda atual estimada, em porcentagem:</span>
+    <input type="text" id="input_perda">
+    <br>
+
+    <span>Digite sua perda esperada com o monitoramento, em porcentagem:</span>
+    <input type="text" id="input_esperada">
+    <br>
+
+    <button onclick="calcular()">Calcular</button>
+
+    <div id="div_mensagem"></div>
+</body>
+</html>
+<script>
+    function calcular(){
+        let area = Number(input_area.value);
+        let irrigadores = Number(input_irrigadores.value);
+        let qtdCafe = Number(input_quantidade.value);
+        let valorSaca = Number(input_valor.value);
+        let perda = Number(input_perda.value);
+        let esperada = Number(input_esperada.value);
+
+        let producaoTotal = area * qtdCafe;
+        let sacasPerdidasAtual = producaoTotal * perda / 100;
+        let sacasEsperadas = producaoTotal * esperada / 100;
+        let sacasPreservadas = sacasPerdidasAtual - sacasEsperadas;
+
+        let valorPreservado = sacasPreservadas * valorSaca;
+        let custoInstalacao = irrigadores * 399.90;
+        let custoMensal = irrigadores * 99.90;
+        let custoPrimeiroAno = custoInstalacao + (custoMensal * 12);
+        let retorno = valorPreservado - custoPrimeiroAno;
+
+        div_mensagem.innerHTML = `Produção total: ${producaoTotal.toFixed(2)} sacas <br> Sacas perdidas atualmente: ${sacasPerdidasAtual.toFixed(2)} <br> Sacas perdidas com o monitoramento: ${sacasEsperadas.toFixed(2)} <br> Sacas preservadas: ${sacasPreservadas.toFixed(2)} <br> Valor preservado: R$ ${valorPreservado.toFixed(2)} <br> Custo de instalação: R$ ${custoInstalacao.toFixed(2)} <br> Custo mensal: R$ ${custoMensal.toFixed(2)} <br> Custo no primeiro ano: R$ ${custoPrimeiroAno.toFixed(2)} <br> Retorno financeiro: R$ ${retorno.toFixed(2)}`
+    }
+</script>
