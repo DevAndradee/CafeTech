@@ -1,4 +1,4 @@
-# ☕ CoffeeFlow: Monitoramento Inteligente e Economia de Irrigação 🌱
+# ☕ CoffeeTech: Monitoramento Inteligente e Economia de Irrigação 🌱
 
 > **Cada gota conta.** Uma interface web moderna desenvolvida em **JavaScript e CSS** para gerenciar o manejo hídrico na cafeicultura, combatendo o desperdício de água através de dados precisos e alertas em tempo real.
 
