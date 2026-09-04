@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Irrigação</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background-color: #6f4e37;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background-color: #f5f1eb;
+            width: 500px;
+            margin: auto;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: #6f4e37;
+        }
+
+        h3 {
+            color: #6f4e37;
+        }
+
+        input {
+            width: 250px;
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #6f4e37;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 25px;
+            background-color: #6f4e37;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #4b3224;
+        }
+
+        #resultado {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 5px;
+            font-size: 17px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Sensor de Umidade do Solo</h1>
+
+        <h3>Dados da Irrigação</h3>
+
+        <p>Água gasta por irrigação (litros)</p>
+        <input type="text" id="ipt_agua" placeholder="Ex: 1000 litros">
+
+        <p>Quantas vezes irriga no mês</p>
+        <input type="text" id="ipt_vezes" placeholder="Ex: 20 vezes">
+
+        <p>Porcentagem de economia com o sensor</p>
+        <input type="text" id="ipt_economia" placeholder="Ex: 15%">
+
+        <p>Valor por litro de água (R$)</p>
+        <input type="text" id="ipt_valorAgua" placeholder="Ex: 0.01">
+
+
+        <h3>Dados da Produção</h3>
+
+        <p>Sacas vendidas</p>
+        <input type="text" id="ipt_vendidas" placeholder="Ex: 600 sacas">
+
+        <p>Sacas perdidas</p>
+        <input type="text" id="ipt_perdidas" placeholder="Ex: 50 sacas">
+
+        <p>Valor de cada saca (R$)</p>
+        <input type="text" id="ipt_valorSaca" placeholder="Ex: R$ 500">
+
+        <br>
+
+        <button onclick="calcular()">Calcular</button>
+
+        <div id="resultado"></div>
+
+    </div>
+
+</body>
+
+<script>
+
+    function calcular() {
+
+        let agua = Number(ipt_agua.value);
+        let vezes = Number(ipt_vezes.value);
+        let economia = Number(ipt_economia.value);
+        let valorAgua = Number(ipt_valorAgua.value);
+
+        let vendidas = Number(ipt_vendidas.value);
+        let perdidas = Number(ipt_perdidas.value);
+        let valorSaca = Number(ipt_valorSaca.value);
+
+
+        let aguaMes = agua * vezes;
+
+        let aguaEconomizada = aguaMes * economia / 100;
+
+        let novaQuantidadeAgua = aguaMes - aguaEconomizada;
+
+        let gastoAgua = aguaMes * valorAgua;
+
+        let dinheiroEconomizado = aguaEconomizada * valorAgua;
+
+
+        let totalSacas = vendidas + perdidas;
+
+        let porcentagemPerda = perdidas / totalSacas * 100;
+
+        let prejuizo = perdidas * valorSaca;
+
+        let faturamento = vendidas * valorSaca;
+
+
+        resultado.innerHTML = `
+
+        <h2>Resultado da Análise</h2>
+
+        <b>Irrigação</b><br><br>
+
+        Água utilizada no mês: ${aguaMes} litros<br><br>
+
+        Água economizada com o sensor: ${aguaEconomizada.toFixed(2)} litros<br><br>
+
+        Nova quantidade de água utilizada: ${novaQuantidadeAgua.toFixed(2)} litros<br><br>
+
+        Valor gasto com água: R$ ${gastoAgua.toFixed(2)}<br><br>
+
+        Economia financeira: R$ ${dinheiroEconomizado.toFixed(2)}<br><br>
+
+
+        <b>Produção de Café</b><br><br>
+
+        Total de sacas: ${totalSacas}<br><br>
+
+        Sacas vendidas: ${vendidas}<br><br>
+
+        Sacas perdidas: ${perdidas}<br><br>
+
+        Porcentagem de perda: ${porcentagemPerda.toFixed(2)}%<br><br>
+
+        Prejuízo pelas perdas: R$ ${prejuizo.toFixed(2)}<br><br>
+
+        Faturamento: R$ ${faturamento.toFixed(2)}
+
+        `;
+    }
+
+</script>
+
+</html>
