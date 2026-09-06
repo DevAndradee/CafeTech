@@ -1,0 +1,48 @@
+USE sprint1;
+
+CREATE TABLE cadastro_produtor (
+    id_produtor INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cpf VARCHAR(14) UNIQUE,
+    telefone VARCHAR(20),
+    email VARCHAR(100),
+    propriedade VARCHAR(100)
+);
+
+INSERT INTO cadastro_produtor (nome, cpf, telefone, email, propriedade)
+VALUES
+('João da Silva', '123.456.789-00', '(35) 99999-1111', 'joao@email.com', 'Fazenda Boa Vista'),
+('Maria Oliveira', '987.654.321-00', '(35) 98888-2222', 'maria@email.com', 'Fazenda São José');
+
+
+CREATE TABLE plantacao (
+    id_plantacao INT AUTO_INCREMENT PRIMARY KEY,
+    id_produtor INT NOT NULL,
+    nome_talhao VARCHAR(100) NOT NULL,
+    area_hectares DECIMAL(6,2),
+    tipo_cafe VARCHAR(50),
+    tipo_solo VARCHAR(50),
+    quantidade_plantas INT
+);
+
+INSERT INTO plantacao (id_produtor, nome_talhao, area_hectares, tipo_cafe, tipo_solo, quantidade_plantas)
+VALUES
+(1, 'Talhão A', 5.50, 'Arábica', 'Argiloso', 5500),
+(2, 'Talhão B', 8.00, 'Arábica', 'Arenoso', 8000);
+
+CREATE TABLE dados_sensor (
+    id_dado INT AUTO_INCREMENT PRIMARY KEY,
+    id_plantacao INT NOT NULL,
+    data_hora DATETIME NOT NULL,
+    umidade_solo DECIMAL(5,2) NOT NULL,
+    temperatura DECIMAL(5,2),
+    nivel_umidade VARCHAR(20)
+
+);
+
+INSERT INTO dados_sensor (id_plantacao, data_hora, umidade_solo, temperatura, nivel_umidade)
+VALUES
+(1, '2026-09-06 08:00:00', 45.50, 23.40, 'Adequada'),
+(2, '2026-09-06 09:00:00', 32.80, 25.10, 'Baixa');
+
+
