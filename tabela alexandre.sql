@@ -17,7 +17,7 @@ create table cliente (
 create table leitura (
     id_leitura int auto_increment primary key,
     umidade decimal (4,1) not null,
-    temperatura decimal (4,1) not null,
+    umidade relativa decimal (4,1) not null,
     data_hora datetime default current_timestamp
 );
 
