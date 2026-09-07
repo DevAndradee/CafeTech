@@ -17,7 +17,6 @@ create table cliente (
 create table leitura (
     id_leitura int auto_increment primary key,
     umidade decimal (4,1) not null,
-    umidade relativa decimal (4,1) not null,
     data_hora datetime default current_timestamp
 );
 
@@ -40,9 +39,9 @@ INSERT INTO cliente (nome, produtor, cnpj, telefone, celular, email, status_clie
 
 -- insert leitura
 INSERT INTO leitura (umidade, temperatura, data_hora) VALUES
-(65.5, 22.0, '2026-09-06 08:00:00'),
-(40.2, 26.5, '2026-09-06 09:00:00'),
-(78.0, 19.8, '2026-09-06 10:00:00');
+(65.5, '2026-09-06 08:00:00'),
+(40.2, '2026-09-06 09:00:00'),
+(78.0, '2026-09-06 10:00:00');
 
 -- insert propriedade
 INSERT INTO propriedade (nome, hectares, tipo_solo, cidade, estado, coordenada_gps) VALUES
