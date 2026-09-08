@@ -27,8 +27,8 @@ CREATE TABLE plantacao (
 
 INSERT INTO plantacao (id_produtor, nome_talhao, area_hectares, tipo_cafe, tipo_solo, quantidade_plantas)
 VALUES
-(1, 'Talhão A', 5.50, 'Arábica', 'Argiloso', 5500),
-(2, 'Talhão B', 8.00, 'Arábica', 'Arenoso', 8000);
+(1, 'hectar A', 5.50, 'Arábica', 'Argiloso', 5500),
+(2, 'hectar B', 8.00, 'Arábica', 'Arenoso', 8000);
 
 CREATE TABLE dados_sensor (
     id_dado INT AUTO_INCREMENT PRIMARY KEY,
