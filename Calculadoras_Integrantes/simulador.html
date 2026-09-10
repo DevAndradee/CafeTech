@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Financeiro</title>
+</head>
+
+<body>
+
+    <h1>Simulador Financeiro</h1>
+
+    <h3>Informe os dados da sua propriedade</h3>
+
+    <b>Área da plantação:</b>
+    <br>
+    <input type="text" id="ipt_area" placeholder="Ex: 20">
+    <span> hectares</span>
+
+    <br><br>
+
+    <b>Produtividade média:</b>
+    <br>
+    <input type="text" id="ipt_produtividade" placeholder="Ex: 30">
+    <span> sacas/ha</span>
+
+    <br><br>
+
+    <b>Preço da saca:</b>
+    <br>
+    <input type="text" id="ipt_precoSacas" placeholder="Ex: 1200">
+    <span> R$/saca</span>
+
+    <br><br>
+
+    <b>Percentual de perda:</b>
+    <br>
+    <input type="text" id="ipt_percentualPerda" placeholder="Ex: 5">
+    <span> %</span>
+
+    <br><br>
+
+    <b>Custo anual de irrigação:</b>
+    <br>
+    <input type="text" id="ipt_custoAnualIrrigacao" placeholder="Ex: 10000">
+    <span> R$/ano</span>
+
+    <br><br>
+
+    <button onclick="mostrarDisperdicio()">
+        Ver meu desperdício
+    </button>
+
+    <button onclick="mostrarSolucao()">
+        Ver meu lucro com a solução
+    </button>
+
+    <br><br>
+
+    <div id="div_resultado"></div>
+
+</body>
+
+</html>
+
+<script>
+
+    function mostrarDisperdicio(){
+
+        let area = Number(ipt_area.value)
+        let produtividade = Number(ipt_produtividade.value)
+        let precoSacas = Number(ipt_precoSacas.value)
+        let percentualPerda = Number(ipt_percentualPerda.value)
+        let custoIrrigacaoAnual = Number(ipt_custoAnualIrrigacao.value)
+
+        let producaoAnual = area * produtividade
+
+        let faturamentoPotencial = producaoAnual * precoSacas
+
+        let sacasPerdidas = producaoAnual * (percentualPerda / 100)
+
+        let perdaFinanceira = sacasPerdidas * precoSacas
+
+        div_resultado.innerHTML = `
+
+            <h2>Seu desperdício atual</h2>
+
+            <p>
+                Produção anual:
+                <b>${producaoAnual.toFixed(0)} sacas</b>
+            </p>
+
+            <p>
+                Faturamento potencial:
+                <b>R$ ${faturamentoPotencial.toFixed(2)}</b>
+            </p>
+
+            <p>
+                Produção perdida:
+                <b>${sacasPerdidas.toFixed(0)} sacas</b>
+            </p>
+
+            <p>
+                <b>Dinheiro perdido por ano:
+                R$ ${perdaFinanceira.toFixed(2)}</b>
+            </p>
+
+            <p>
+                Custo anual de irrigação:
+                <b>R$ ${custoIrrigacaoAnual.toFixed(2)}</b>
+            </p>
+
+        `
+    }
+
+
+    function mostrarSolucao(){
+
+        let area = Number(ipt_area.value)
+        let produtividade = Number(ipt_produtividade.value)
+        let precoSacas = Number(ipt_precoSacas.value)
+        let percentualPerda = Number(ipt_percentualPerda.value)
+        let custoIrrigacaoAnual = Number(ipt_custoAnualIrrigacao.value)
+
+        let producaoAnual = area * produtividade
+
+        let sacasPerdidas = producaoAnual * (percentualPerda / 100)
+
+        let perdaFinanceira = sacasPerdidas * precoSacas
+
+        let reducaoPerda = 60
+
+        let valorRecuperado = perdaFinanceira * (reducaoPerda / 100)
+
+        let economiaIrrigacao = custoIrrigacaoAnual * 0.20
+
+        let beneficioAnual = valorRecuperado + economiaIrrigacao
+
+        let investimento = 8000
+
+        let mensalidade = 150
+
+        let custoAnualSistema = investimento + (mensalidade * 12)
+
+        let lucroPrimeiroAno = beneficioAnual - custoAnualSistema
+
+        let lucroAnosSeguintes = beneficioAnual - (mensalidade * 12)
+
+        let beneficioMensal = beneficioAnual / 12
+
+        let payback = investimento / (beneficioMensal - mensalidade)
+
+        let sacasPerdidasComSistema = sacasPerdidas * ((100 - reducaoPerda) / 100)
+
+        let perdaFinanceiraComSistema = sacasPerdidasComSistema * precoSacas
+
+        div_resultado.innerHTML = `
+
+            <h2>Seu resultado com nossa solução</h2>
+
+            <h3>Resultado financeiro</h3>
+
+            <p>
+                Valor recuperado da produção:
+                <b>R$ ${valorRecuperado.toFixed(2)} por ano</b>
+            </p>
+
+            <p>
+                Economia estimada na irrigação:
+                <b>R$ ${economiaIrrigacao.toFixed(2)} por ano</b>
+            </p>
+
+            <p>
+                Benefício financeiro anual:
+                <b>R$ ${beneficioAnual.toFixed(2)}</b>
+            </p>
+
+            <p>
+                Investimento inicial:
+                <b>R$ ${investimento.toFixed(2)}</b>
+            </p>
+
+            <p>
+                Mensalidade:
+                <b>R$ ${mensalidade.toFixed(2)}</b>
+            </p>
+
+            <p>
+                <b>Lucro líquido no primeiro ano:
+                R$ ${lucroPrimeiroAno.toFixed(2)}</b>
+            </p>
+
+            <p>
+                <b>Lucro líquido anual após o primeiro ano:
+                R$ ${lucroAnosSeguintes.toFixed(2)}</b>
+            </p>
+
+            <p>
+                <b>Retorno do investimento:
+                ${payback.toFixed(1)} meses</b>
+            </p>
+
+            <hr>
+
+            <h2>Comparação: Antes x Depois</h2>
+
+            <h3>Sem nosso projeto</h3>
+
+            <p>
+                Perda de produção:
+                <b>${sacasPerdidas.toFixed(0)} sacas</b>
+            </p>
+
+            <p>
+                Perda financeira:
+                <b>R$ ${perdaFinanceira.toFixed(2)} por ano</b>
+            </p>
+
+            <p>
+                Custo de irrigação:
+                <b>R$ ${custoIrrigacaoAnual.toFixed(2)} por ano</b>
+            </p>
+
+            <h3>Com nosso projeto</h3>
+
+            <p>
+                Perda de produção:
+                <b>${sacasPerdidasComSistema.toFixed(0)} sacas</b>
+            </p>
+
+            <p>
+                Perda financeira:
+                <b>R$ ${perdaFinanceiraComSistema.toFixed(2)} por ano</b>
+            </p>
+
+            <p>
+                Custo de irrigação:
+                <b>R$ ${(custoIrrigacaoAnual - economiaIrrigacao).toFixed(2)} por ano</b>
+            </p>
+
+            <p>
+                <b>Benefício financeiro total:
+                R$ ${beneficioAnual.toFixed(2)} por ano</b>
+            </p>
+
+            <hr>
+
+            <h2>
+                <b>Seu potencial de ganho com o monitoramento hídrico:
+                R$ ${beneficioAnual.toFixed(2)} por ano</b>
+            </h2>
+
+        `
+    }
+</script>
