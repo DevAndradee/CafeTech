@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Calculadora Financeira</h1>
+
+    <span>Informe o tamanho em hectares:</span>
+    <input type="text" id="input_tmnhectar"><br>
+
+    <span>Produtividade média por hectar (sacas):</span>
+    <input type="text" id="input_media"><br>
+
+    <span>Preço da saca:</span>
+    <input type="text" id="input_saca"><br>
+
+    <span>Perda sem o sistema em %: </span>
+    <input type="text" id="input_perdasem"><br>
+
+    <span>perda com o sistema em %:</span>
+    <input type="text" id="input_perdasis"><br>
+
+    <span>Investimento no sistema:</span>
+    <input type="text" id="input_investimento"><br>
+    
+    <button onclick="consultar()">Consultar</button>
+
+    <div id="div_exibir"></div>
+</body>
+</html>
+<script>
+function consultar(){
+let tamanhoHectar = Number(input_tmnhectar.value);
+let qntSacas = Number(input_media.value);
+let vlrSaca = Number(input_saca.value);
+let perdaSemSis = Number(input_perdasem.value);
+let perdaComSis = Number(input_perdasis.value);
+let investimento = Number(input_investimento.value);
+
+let calculoSaca = tamanhoHectar * qntSacas;
+let valorprod = calculoSaca * vlrSaca 
+let calculoSemSis = calculoSaca * (perdaSemSis / 100);
+let calculoComSis = calculoSaca * (perdaComSis / 100);
+
+let mediaComSis = calculoSaca - calculoComSis;
+let mediaSemSis = calculoSaca - calculoSemSis;
+
+let sacasPreservadas = calculoSemSis - calculoComSis;
+let valorPreservado = sacasPreservadas * vlrSaca;
+
+let beneficioLiquido = valorPreservado - investimento;
+
+let retorno = (beneficioLiquido / investimento) * 100;
+
+
+let lucroTotal = vlrSaca * calculoSaca;
+
+let mensagem = `Resultado
+Produção estimada: ${calculoSaca} sacas<br>
+
+Valor da produção R$ ${valorprod}<br>
+
+Perda sem o sistema: ${calculoSemSis} sacas<br>
+
+Perda com o sistema: ${calculoComSis} sacas<br>
+
+Sacas preservadas: ${sacasPreservadas} sacas<br>
+
+Valor preservado: R$ ${valorPreservado}<br>
+
+Investimento: R$ ${investimento}<br>
+
+ Benefício líquido estimado<br>
+R$ ${beneficioLiquido}<br>
+
+ Retorno sobre o investimento<br>
+${retorno}%<br>`
+
+div_exibir.innerHTML = mensagem
+
+}
+
+
+
+</script>
