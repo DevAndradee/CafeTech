@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora PI</title>
+</head>
+<body>
+    <h1><b>Calculadora Financeira</b></h1>
+
+    <span>informe a quantidade de hectares:</span>
+    <input type="number" id="ipt_hectares"><br>
+
+    <span>informe a produtividade média de sacas por hectar:</span>
+    <input type="number" id="ipt_produtividade"><br>
+    
+    <span>informe o valor da saca de café:</span>
+    <input type="number" id="ipt_saca"><br>
+    
+    <span>Perda sem o sistema em %</span>
+    <input type="number" id="ipt_perdasem"><br>
+
+    <span>Perda com o sistema em %</span>
+    <input type="number" id="ipt_perdacom"><br>
+
+     <button onclick = Calcular()>Calcular</button>
+
+    <div id="div_exibir"></div>
+
+<script>
+function Calcular(){
+let totalhectar = Number(ipt_hectares.value);
+let mediaSacas = Number(ipt_produtividade.value);
+let valorSaca = Number(ipt_saca.value);
+let perdaSem = Number(ipt_perdasem.value);
+let perdaCom = Number(ipt_perdacom.value);
+
+let totalSacas = totalhectar * mediaSacas;
+let valorTotal = totalSacas * valorSaca;
+
+let seminv = totalSacas * (perdaSem / 100);
+let cominv = totalSacas * (perdaCom / 100);
+
+let mediaseminv = totalSacas - seminv;
+let mediacominv = totalSacas - cominv;
+
+let sacaeconomizada = seminv - cominv;
+let dinheiroEconomizado = sacaeconomizada * valorSaca;
+
+let mensagem = `Total sacas: ${totalSacas}<br>
+Valor da safra: R$ ${valorTotal}<br>
+Perda sem sensor: ${seminv}<br>
+Perda com sensor ${cominv}<br>
+Sacas economizadas: ${sacaeconomizada}<br>
+Dinheiro economizado: R$ ${dinheiroEconomizado}`
+
+div_exibir.innerHTML = mensagem
+
+}
+</script>
+
+</body>
+</html>
